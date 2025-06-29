@@ -1,0 +1,61 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+QUICK_START.md
+DIGITAL_NOTES_EXPANSION.md
+
+# Development files
+.env
+.env.*
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Scripts
+setup.sh
+setup.bat
+install_fallback.sh
+start_local_llm.sh
+
+# Test files
+tests/
+*.test.py
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/ 

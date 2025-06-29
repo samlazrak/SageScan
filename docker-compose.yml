@@ -1,0 +1,105 @@
+services:
+  # Ollama service for running various LLM models
+  ollama:
+    image: ollama/ollama:latest
+    container_name: scansage-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:11434/api/tags || exit 0"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # llama.cpp server for additional model support (optional)
+  llama-cpp:
+    image: ghcr.io/ggerganov/llama.cpp:server
+    container_name: scansage-llama-cpp
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./models:/models
+      - llama_cpp_data:/app/models
+    environment:
+      - MODEL_PATH=/models/llama-2-7b-chat.gguf
+      - N_CTX=2048
+      - N_THREADS=4
+      - N_GPU=1
+    command: >
+      --model /models/llama-2-7b-chat.gguf
+      --host 0.0.0.0
+      --port 8080
+      --n-ctx 2048
+      --n-thread 4
+    restart: unless-stopped
+    profiles:
+      - llama-cpp
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 0"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ScanSage application
+  scansage:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scansage-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+      - ./results:/app/results
+      - ./examples:/app/examples
+      - ./dropbox:/app/dropbox
+    environment:
+      - LOG_LEVEL=INFO
+      - DEFAULT_LLM_PROVIDER=local
+      - DEFAULT_LLM_MODEL=llama2
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - LLAMA_CPP_BASE_URL=http://llama-cpp:8080
+      - TESSERACT_CMD=/usr/bin/tesseract
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 0"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Optional: Web UI for Ollama
+  ollama-webui:
+    image: ghcr.io/ollama-webui/ollama-webui:main
+    container_name: scansage-ollama-webui
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_API_BASE_URL=http://ollama:11434/api
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: unless-stopped
+    profiles:
+      - webui
+
+volumes:
+  ollama_data:
+    driver: local
+  llama_cpp_data:
+    driver: local
+
+networks:
+  default:
+    name: scansage-network 

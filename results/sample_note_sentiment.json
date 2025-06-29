@@ -1,0 +1,19 @@
+[
+  {
+    "filename": "sample_note.txt",
+    "extracted_text": "",
+    "processed_text": "",
+    "summary": "Processing failed",
+    "sentiment": "neutral",
+    "sentiment_score": 0.0,
+    "key_topics": [],
+    "action_items": [],
+    "confidence": 0.0,
+    "ocr_confidence": 0.0,
+    "word_count": 0,
+    "sentence_count": 0,
+    "processing_time": 0.00011420249938964844,
+    "model_used": "none",
+    "error": "Unsupported image format: examples/sample_notes/sample_note.txt"
+  }
+]

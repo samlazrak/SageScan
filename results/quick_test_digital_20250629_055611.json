@@ -1,0 +1,19 @@
+[
+  {
+    "filename": "sample_note.txt",
+    "extracted_text": "Meeting Notes - Project Planning Session\nDate: 2024-01-15\nAttendees: John Smith, Jane Doe, Mike Johnson\n\nAgenda:\n1. Review current project status\n2. Discuss upcoming milestones\n3. Address technical challenges\n4. Plan resource allocation\n\nKey Points:\n- The machine learning model is performing well with 95% accuracy\n- We need to implement the new API endpoints by next week\n- Database optimization is required for better performance\n- Team morale is high and everyone is motivated\n\nAction Items:\n1. John to complete API documentation by Friday\n2. Jane to review the ML model performance metrics\n3. Mike to schedule the next team meeting\n\nChallenges:\n- Limited server resources for scaling\n- Need to hire additional developers\n- Timeline is tight but manageable\n\nNext Steps:\n- Implement caching mechanism\n- Set up monitoring and alerting\n- Prepare for client presentation\n\nOverall sentiment: Positive progress with clear action plan. ",
+    "processed_text": "meeting notes - project planning session date: 2024-01-15 attendees: john smith, jane doe, mike johnson agenda: 1 review current project status 2 discuss upcoming milestones 3 address technical challenges 4 plan resource allocation key points: - the machine learning model is performing well with 95 accuracy - we need to implement the new api endpoints by next week - database optimization is required for better performance - team morale is high and everyone is motivated action items: 1 john to complete api documentation by friday 2 jane to review the ml model performance metrics 3 mike to schedule the next team meeting challenges: - limited server resources for scaling - need to hire additional developers - timeline is tight but manageable next steps: - implement caching mechanism - set up monitoring and alerting - prepare for client presentation overall sentiment: positive progress with clear action plan",
+    "summary": "",
+    "sentiment": "neutral",
+    "sentiment_score": 0.0,
+    "key_topics": [],
+    "action_items": [],
+    "confidence": 0.7,
+    "ocr_confidence": 100.0,
+    "word_count": 146,
+    "sentence_count": 8,
+    "processing_time": 25.0162193775177,
+    "model_used": "tinyllama",
+    "error": null
+  }
+]
