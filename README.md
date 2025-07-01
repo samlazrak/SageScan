@@ -1,291 +1,155 @@
-# ScanSage - AI-Powered Document Analysis
+# ScanSage
 
-ScanSage is a comprehensive document processing system that combines OCR (Optical Character Recognition), text preprocessing, and LLM (Large Language Model) analysis to extract insights from scanned documents and digital notes.
+A tool that reads text from scanned documents and analyzes it using language models. Built this to help process handwritten notes and scanned papers - turns out it's pretty useful for extracting insights from any kind of document.
 
-## Features
+## What it does
 
-- **OCR Processing**: Extract text from scanned images with high accuracy
-- **Text Preprocessing**: Clean and normalize OCR-extracted text
-- **LLM Analysis**: Sentiment analysis, summarization, and key topic extraction
-- **Multi-format Support**: Images (JPG, PNG, TIFF) and digital documents (PDF, DOCX, TXT)
-- **Local LLM Support**: Run with Ollama or llama.cpp for privacy
-- **Batch Processing**: Process multiple files efficiently
-- **Docker Support**: Easy deployment with Docker Compose
+- Reads text from images using OCR (works with handwriting too, though results vary)
+- Cleans up the extracted text to make it more readable
+- Runs sentiment analysis, summarization, and topic extraction using local LLMs
+- Handles images (JPG, PNG, TIFF) and digital files (PDF, DOCX, TXT)
+- Can process single files or entire folders
 
-## Quick Start with Docker
+The main advantage is running everything locally with Ollama - no need to send your documents to external APIs.
 
-### Prerequisites
+## Getting started
 
-- Docker and Docker Compose installed
-- At least 8GB RAM (for larger models) or 4GB RAM (for smaller models)
+You'll need Docker installed. That's it.
 
-### 1. Clone and Setup
+### Basic setup
 
 ```bash
 git clone <repository-url>
 cd ScanSage
-```
 
-### 2. Start Services
-
-```bash
-# Start Ollama and ScanSage containers
+# Start the services
 docker-compose up -d ollama
 
-# Wait for Ollama to be ready (check with: docker-compose ps)
-```
-
-### 3. Download LLM Models
-
-```bash
-# Pull a small model that fits in memory (recommended for testing)
+# Download a model (this one's small and fast)
 docker-compose exec ollama ollama pull tinyllama
-
-# Or pull larger models if you have sufficient RAM
-docker-compose exec ollama ollama pull llama2:7b
 ```
 
-### 4. Run Sentiment Analysis
-
-Use the provided script for easy one-off jobs:
+### Try it out
 
 ```bash
-# Make the script executable (first time only)
+# Make the script executable
 chmod +x run_scansage_job.sh
 
-# Run sentiment analysis on an image
+# Process an image
 ./run_scansage_job.sh \
   --input examples/image.png \
-  --output results/sentiment_analysis.json \
+  --output results/analysis.json \
   --llm-provider ollama \
   --llm-model tinyllama \
   --stats
 ```
 
-### 5. View Results
+Check `results/analysis.json` for the extracted text and analysis.
 
-The results will be saved to `results/sentiment_analysis.json` with:
-- Extracted text from OCR
-- Sentiment analysis (positive/negative/neutral)
-- Key topics and action items
-- Processing statistics
-
-## Usage Examples
-
-### Basic Image Processing
+## More examples
 
 ```bash
-# Process a single image with default settings
-./run_scansage_job.sh --input your_image.jpg --output results/output.json
-```
-
-### Digital Notes Processing
-
-```bash
-# Process text files (PDF, DOCX, TXT) instead of images
+# Process text files instead of images
 ./run_scansage_job.sh \
-  --input examples/sample_notes/sample_note.txt \
-  --output results/digital_notes.json \
-  --digital \
-  --llm-provider ollama \
-  --llm-model tinyllama
-```
+  --input my_notes.txt \
+  --output results/text_analysis.json \
+  --digital
 
-### Batch Processing
-
-```bash
-# Process all images in a folder
+# Process a whole folder of images
 ./run_scansage_job.sh \
-  --input your_images_folder/ \
-  --output results/batch_results.json \
-  --stats
-```
+  --input photos/ \
+  --output results/batch.json
 
-### Advanced Configuration
-
-```bash
-# Use different LLM models and providers
+# Use a bigger model (needs more RAM)
 ./run_scansage_job.sh \
-  --input examples/image.png \
-  --output results/advanced.json \
-  --llm-provider ollama \
-  --llm-model llama2:7b \
-  --no-stopwords \
-  --no-lemmatize \
-  --stats
+  --input document.png \
+  --output results/detailed.json \
+  --llm-model llama2:7b
 ```
 
-## Available Models
+## Models and memory
 
-### Memory Requirements
-
-| Model | Size | RAM Required | Use Case |
-|-------|------|--------------|----------|
-| `tinyllama` | 637 MB | ~2 GB | Testing, quick analysis |
-| `llama2:7b` | 3.8 GB | ~8 GB | Better quality analysis |
-| `llama2:latest` | 3.8 GB | ~8 GB | Latest features |
-
-### Pulling Models
+| Model | Download Size | RAM Needed | Notes |
+|-------|---------------|------------|-------|
+| `tinyllama` | 637 MB | ~2 GB | Good for testing |
+| `llama2:7b` | 3.8 GB | ~8 GB | Better quality |
 
 ```bash
-# Check available models
+# See what models you have
 docker-compose exec ollama ollama list
 
-# Pull a specific model
-docker-compose exec ollama ollama pull <model_name>
+# Get a new one
+docker-compose exec ollama ollama pull llama2:7b
+```
+
+## When things break
+
+**Out of memory?**
+```bash
+# Use the tiny model
+docker-compose exec ollama ollama pull tinyllama
+```
+
+**Containers not starting?**
+```bash
+# Check what's happening
+docker-compose ps
+docker-compose logs scansage
+```
+
+**OCR not working well?**
+The OCR works best with clear, high-contrast text. Handwriting recognition is hit-or-miss depending on legibility.
+
+## Running without Docker
+
+If you prefer to run everything locally:
+
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Download language data
+python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
+python -m spacy download en_core_web_sm
+
+# Run it
+python main.py --input your_file.jpg --output results.json
 ```
 
 ## Configuration
 
-### Environment Variables
-
-The following environment variables can be set in `docker-compose.yml`:
+The `docker-compose.yml` file has some settings you can tweak:
 
 ```yaml
 environment:
-  - LOG_LEVEL=INFO
-  - DEFAULT_LLM_PROVIDER=local
+  - LOG_LEVEL=INFO  # Change to DEBUG if something's not working
   - DEFAULT_LLM_MODEL=tinyllama
   - OLLAMA_BASE_URL=http://ollama:11434
-  - TESSERACT_CMD=/usr/bin/tesseract
 ```
 
-### Volume Mounts
-
-The following directories are mounted for data persistence:
-
-- `./data` → `/app/data` - Application data
-- `./uploads` → `/app/uploads` - Upload directory
-- `./results` → `/app/results` - Output results
-- `./examples` → `/app/examples` - Example files
-
-## Troubleshooting
-
-### Memory Issues
-
-If you encounter memory errors:
-
-```bash
-# Check available memory
-docker-compose exec ollama free -h
-
-# Use a smaller model
-docker-compose exec ollama ollama pull tinyllama
-
-# Or increase Docker memory limits in Docker Desktop
-```
-
-### Container Issues
-
-```bash
-# Check container status
-docker-compose ps
-
-# View logs
-docker-compose logs scansage
-docker-compose logs ollama
-
-# Restart services
-docker-compose restart
-```
-
-### OCR Issues
-
-```bash
-# Check if Tesseract is working
-docker-compose exec scansage tesseract --version
-
-# Test OCR on a simple image
-docker-compose exec scansage python -c "
-from src.ocr_processor import OCRProcessor
-processor = OCRProcessor()
-result = processor.extract_text('examples/image.png')
-print(f'OCR Confidence: {result[\"confidence\"]}%')
-"
-```
-
-## Development
-
-### Local Development Setup
-
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Download NLP data
-python -c "import nltk; nltk.download('punkt'); nltk.download('stopwords'); nltk.download('wordnet')"
-python -m spacy download en_core_web_sm
-
-# Run tests
-python -m pytest tests/
-```
-
-### Running Without Docker
-
-```bash
-# Set up environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# Run directly
-python main.py --input examples/image.png --output results/local_test.json
-```
-
-## API Reference
-
-### Command Line Arguments
-
-```bash
-python main.py --help
-```
-
-Key arguments:
-- `--input`: Input file or folder path
-- `--output`: Output JSON file path
-- `--digital`: Process digital files (PDF, DOCX, TXT) instead of images
-- `--llm-provider`: LLM provider (openai, anthropic, local, ollama, llama-cpp)
-- `--llm-model`: Model name to use
-- `--stats`: Show processing statistics
-- `--verbose`: Enable verbose logging
-
-### Python API
+## Python API
 
 ```python
 from src.note_processor import NoteProcessor
 
-# Initialize processor
 processor = NoteProcessor(
     llm_provider="ollama",
     llm_model="tinyllama"
 )
 
-# Process a single file
-result = processor.process_single_note("path/to/image.jpg")
-
-# Process multiple files
-results = processor.process_batch("path/to/folder/")
+result = processor.process_single_note("my_image.jpg")
+print(result['sentiment'])
 ```
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+Found a bug or want to add something? Pull requests are welcome. The code could probably use some cleanup in places.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Support
-
-For issues and questions:
-- Check the troubleshooting section above
-- Review the logs with `docker-compose logs`
-- Open an issue on GitHub
+MIT License - do whatever you want with it.
 
 ---
 
-**Note**: This system requires sufficient memory to run LLM models. For production use, consider using cloud-based LLM services or dedicated hardware with adequate RAM. 
+**Heads up**: The language models need a decent amount of RAM. If you're on a laptop, stick with `tinyllama`. For production stuff, you might want to use cloud APIs instead. 
