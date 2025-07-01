@@ -1,0 +1,26 @@
+[
+  {
+    "image_path": "report.jpg",
+    "extracted_text": "QUARTERLY SALES REPORT\nQ4 2023 Performance Summary\n\nOur company has achieved remarkable growth this quarter, with sales increasing by 25% compared to the previous quarter. Customer satisfaction ratings have improved significantly, with positive feedback highlighting our enhanced customer service and product quality. The marketing team's new campaign proved highly effective, resulting in increased brand awareness and customer acquisition. Moving forward, we plan to expand our product line and explore new market opportunities.",
+    "summary": "QUARTERLY SALES REPORT\nQ4 2023 Performance Summary\n\nOur company has achieved remarkable growth this ...",
+    "sentiment_analysis": {
+      "sentiment": "positive",
+      "confidence": 0.9,
+      "explanation": "Text contains 5 positive indicators like 'excellent', 'outstanding', 'growth'."
+    },
+    "success": true,
+    "demo_mode": true
+  },
+  {
+    "image_path": "feedback.png",
+    "extracted_text": "CUSTOMER FEEDBACK\nThis product exceeded my expectations! The quality is outstanding and the customer service was exceptional. I would definitely recommend this to others and will purchase again. The delivery was fast and the packaging was perfect. Very satisfied with this purchase.",
+    "summary": "CUSTOMER FEEDBACK\nThis product exceeded my expectations! The quality is outstanding and the customer...",
+    "sentiment_analysis": {
+      "sentiment": "positive",
+      "confidence": 0.9,
+      "explanation": "Text contains 5 positive indicators like 'excellent', 'outstanding', 'growth'."
+    },
+    "success": true,
+    "demo_mode": true
+  }
+]
