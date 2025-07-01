@@ -1,0 +1,31 @@
+{
+  "app_name": "Deep Researcher Agent",
+  "version": "1.0.0",
+  "default_settings": {
+    "max_links": 20,
+    "max_depth": 2,
+    "delay_between_requests": 1.0,
+    "use_multi_level": true,
+    "include_images": true,
+    "allowed_domains": [
+      "arxiv.org",
+      "scholar.google.com",
+      "pubmed.ncbi.nlm.nih.gov",
+      "ieee.org",
+      "acm.org",
+      "nature.com",
+      "science.org"
+    ],
+    "blocked_domains": [
+      "facebook.com",
+      "twitter.com",
+      "linkedin.com",
+      "instagram.com"
+    ]
+  },
+  "scraping_settings": {
+    "user_agent": "Mozilla/5.0 (compatible; DeepResearcherAgent/1.0)",
+    "timeout": 10,
+    "max_retries": 3
+  }
+}
