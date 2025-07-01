@@ -1,0 +1,9 @@
+mlx
+mlx-lm
+pillow
+pytesseract
+opencv-python
+numpy
+argparse
+pathlib
+typing
