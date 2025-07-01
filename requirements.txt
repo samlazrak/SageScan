@@ -1,0 +1,10 @@
+mlx
+mlx-lm
+Pillow>=9.0.0
+pytesseract>=0.3.10
+opencv-python>=4.5.0
+numpy>=1.21.0
+transformers>=4.20.0
+torch>=1.12.0
+click>=8.0.0
+pathlib2>=2.3.0
