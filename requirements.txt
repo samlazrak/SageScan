@@ -1,0 +1,9 @@
+mlx
+mlx-lm
+opencv-python
+pytesseract
+pillow
+numpy
+click
+rich
+transformers
