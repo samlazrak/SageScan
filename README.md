@@ -1,3 +1,5 @@
+# Vibe coded
+
 # Text Summarizer with OCR and MLX
 
 A Python application that combines Optical Character Recognition (OCR) with small language models in MLX format to extract and summarize text from images and documents.
