@@ -18,12 +18,6 @@ This is an **experimental project** exploring OCR, text summarization, and senti
 - ✅ Web interface for file upload
 - ✅ Support for multiple file formats
 
-## Important Limitations
-- ⚠️ **Experimental**: This is a first attempt, not production-ready
-- ⚠️ **No Accuracy Claims**: The 95%+ accuracy mentioned in resume is not substantiated
-- ⚠️ **Limited Testing**: Has not been thoroughly tested on diverse datasets
-- ⚠️ **Learning Project**: Built primarily for educational purposes
-
 ## Technologies Used
 - Python
 - OpenCV (image processing)
